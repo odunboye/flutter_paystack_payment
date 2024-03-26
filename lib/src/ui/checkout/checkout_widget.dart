@@ -94,10 +94,10 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Row(
+        const Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             Icon(Icons.lock, size: 10),
             Padding(
               padding: EdgeInsetsDirectional.only(start: 3),
@@ -193,7 +193,7 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
                   child: Text(Utils.formatAmount(_charge.amount),
                       style: TextStyle(
                           fontSize: 15.0,
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                           fontWeight: FontWeight.w500)))
             ],
           )

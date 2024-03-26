@@ -28,31 +28,54 @@ class WebView extends StatelessWidget {
     void readResponse() async {
       // setState(() {
       controller!
-          .runJavascriptReturningResult(
+          .runJavaScriptReturningResult(
               "document.getElementById('return').innerText")
           .then((value) async {
         // if (value == "null ") {
         //   response =
         //       "{\"status\":\"requery\",\"message\":\"Reaffirm Transaction Status on Server\"}";
         // } else {
-        response = response!.length > 7 ? response : value;
+        response = response!.length > 7 ? response : value.toString();
         // }
       });
     }
-// value contains the html data of page as string
-
+    // value contains the html data of page as string
     // );
     // WebView(    )
-    return view.WebView(
-      initialUrl: url,
-      onWebViewCreated: (controller) {
-        controller = controller;
-      },
-      javascriptMode: view.JavascriptMode.unrestricted,
-      gestureNavigationEnabled: true,
-      onPageFinished: (_) {
-        readResponse();
-      },
+
+    controller = view.WebViewController()
+      ..setJavaScriptMode(view.JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        view.NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            readResponse();
+          },
+          onWebResourceError: (view.WebResourceError error) {},
+          onNavigationRequest: (view.NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return view.NavigationDecision.prevent;
+            }
+            return view.NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(url));
+    return view.WebViewWidget(
+      controller: controller,
+      // initialUrl: url,
+      // onWebViewCreated: (controller) {
+      //   controller = controller;
+      // },
+      // javascriptMode: view.JavascriptMode.unrestricted,
+      // gestureNavigationEnabled: true,
+      // onPageFinished: (_) {
+      //   readResponse();
+      // },
     );
   }
 }
